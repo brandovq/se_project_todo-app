@@ -61,6 +61,12 @@ const generateTodo = (data) => {
   return todoElement;
 };
 
+// New reusable function to render and append a todo
+const renderTodo = (item) => {
+  const todo = generateTodo(item);
+  todosList.append(todo);
+};
+
 addTodoButton.addEventListener("click", () => {
   openModal(addTodoPopup);
 });
@@ -74,23 +80,28 @@ addTodoForm.addEventListener("submit", (evt) => {
   const name = evt.target.name.value;
   const dateInput = evt.target.date.value;
 
-  // Create a date object and adjust for timezone
+  // Created a date object and adjusted for timezone
   const date = new Date(dateInput);
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
   const id = uuidv4();
   const values = { name, date, id };
-  const todo = generateTodo(values);
-  todosList.append(todo);
 
-  newTodoValidator.resetValidation(); // Resets form and validation
+  // Use the renderTodo function to add the new todo
+  renderTodo(values);
+
+  // Resets the form fields
+  evt.target.reset();
+
+  // Resets form validation state
+  newTodoValidator.resetValidation();
 
   closeModal(addTodoPopup);
 });
 
+// Rendered initial todos using the renderTodo function
 initialTodos.forEach((item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
+  renderTodo(item);
 });
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
