@@ -90,10 +90,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   // Use the renderTodo function to add the new todo
   renderTodo(values);
 
-  // Resets the form fields
-  evt.target.reset();
-
-  // Resets form validation state
+  // Resets form fields and validation state
   newTodoValidator.resetValidation();
 
   closeModal(addTodoPopup);
