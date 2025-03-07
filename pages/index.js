@@ -83,8 +83,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   const todo = generateTodo(values);
   todosList.append(todo);
 
-  // Resets the form fields
-  evt.target.reset();
+  newTodoValidator.resetValidation(); // Resets form and validation
 
   closeModal(addTodoPopup);
 });

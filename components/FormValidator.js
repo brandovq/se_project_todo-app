@@ -88,6 +88,21 @@ class FormValidator {
     });
     this._setEventListeners();
   }
+
+  // Resets validation method
+  resetValidation() {
+    this._inputList.forEach((inputElement) => {
+      const errorElement = this._formEl.querySelector(
+        `#${inputElement.id}-error`
+      );
+      inputElement.classList.remove(this._inputErrorClass);
+      errorElement.textContent = "";
+      errorElement.classList.remove(this._errorClass);
+    });
+
+    this._formEl.reset();
+    this._toggleButtonState();
+  }
 }
 
 export default FormValidator;
