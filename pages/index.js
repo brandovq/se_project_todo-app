@@ -1,5 +1,8 @@
+import { v4 as uuidv4 } from "https://jspm.dev/uuid";
+
 import { initialTodos, validationConfig } from "../utils/constants.js";
 import Todo from "../components/Todo.js";
+import FormValidator from "../components/FormValidator.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
@@ -17,6 +20,7 @@ const closeModal = (modal) => {
 };
 
 // The logic in this function should all be handled in the Todo class.
+//****IMPORTANT NOTE****: Remember that when working outside a class, you call the method by referencing the name of the instance (ex. todo) and you would call the method, ex. --> todo.getView(). Inside the class, for example when you call it, you reference the this._ object by writing this._ first then the name of the method your calling.
 const generateTodo = (data) => {
   const todo = new Todo(data, "#todo-template");
   const todoElement = todo.getView();
@@ -74,9 +78,14 @@ addTodoForm.addEventListener("submit", (evt) => {
   const date = new Date(dateInput);
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
-  const values = { name, date };
+  const id = uuidv4();
+  const values = { name, date, id };
   const todo = generateTodo(values);
   todosList.append(todo);
+
+  // Resets the form fields
+  evt.target.reset();
+
   closeModal(addTodoPopup);
 });
 
@@ -84,3 +93,6 @@ initialTodos.forEach((item) => {
   const todo = generateTodo(item);
   todosList.append(todo);
 });
+
+const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
+newTodoValidator.enableValidation();
