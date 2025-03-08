@@ -26,4 +26,4 @@ This project utilizes modern web development technologies, including:
 
 This project is deployed on GitHub Pages:
 
-https://brandovq.github.io/se_project_todo-app/d
+https://brandovq.github.io/se_project_todo-app/
