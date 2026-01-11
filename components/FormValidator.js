@@ -91,13 +91,12 @@ class FormValidator {
 
   // Resets validation method
   resetValidation() {
-    // Below: first line below resets validation state (e.g., clear error messages, enable submit button)
+    // Two lines below: resets validation state (e.g., clear error messages, enable submit button)
     this._inputList.forEach((inputElement) => {
       this._hideInputError(inputElement); // Reuses the existing hideInputError method instead of rewriting code.
     });
 
-    // first line of code below resets the form fields
-    this._formEl.reset();
+    this._formEl.reset(); // resets the form fields
     this._toggleButtonState();
   }
 }
