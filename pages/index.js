@@ -21,12 +21,20 @@ function handleCheck(completed) {
   todoCounter.updateCompleted(completed);
 }
 
+function handleDelete(completed) {
+  if (completed) {
+    todoCounter.updateCompleted(false); // Decrement completed count if the deleted todo was completed
+  }
+  todoCounter.updateTotal(false); // Always decrement total count when a todo is deleted
+}
+
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (inputValues) => {
     //Move code from existing submission handler to here (below)
     const todo = generateTodo(inputValues);
     section.addItem(todo);
+    todoCounter.updateTotal(true); // <-- Added this line to update total count when a new todo is added
     addTodoPopup.close();
     addTodoForm.reset();
   },
@@ -36,7 +44,7 @@ addTodoPopup.setEventListeners();
 // The logic in this function should all be handled in the Todo class.
 //****IMPORTANT NOTE****: Remember that when working outside a class, you call the method by referencing the name of the instance (ex. todo) and you would call the method, ex. --> todo.getView(). Inside the class, for example when you call it, you reference the this._ object by writing this._ first then the name of the method your calling.
 const generateTodo = (data) => {
-  const todo = new Todo(data, "#todo-template", handleCheck);
+  const todo = new Todo(data, "#todo-template", handleCheck, handleDelete);
   const todoElement = todo.getView();
 
   return todoElement;

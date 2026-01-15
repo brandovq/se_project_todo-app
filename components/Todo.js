@@ -1,9 +1,10 @@
 class Todo {
-  constructor(data, selector, handleCheck) {
+  constructor(data, selector, handleCheck, handleDelete) {
     this._data = data;
     this._templateElement = document.querySelector(selector);
-    this._handleCheck = handleCheck;
     this._completed = data.completed;
+    this._handleCheck = handleCheck;
+    this._handleDelete = handleDelete;
   }
 
   _generateCheckboxEl() {
@@ -31,11 +32,17 @@ class Todo {
 
   _setEventListener() {
     this._todoDeleteBtn.addEventListener("click", () => {
+      this._handleDelete(this._completed);
       this._todoElement.remove();
     });
 
     this._todoCheckboxEl.addEventListener("change", () => {
-      this._handleCheck(this._completed);
+      const isCompleted = this._todoCheckboxEl.checked;
+      this._completed = isCompleted;
+      this._data.completed = isCompleted;
+      this._handleCheck(isCompleted);
+      // Old code below:
+      // this._handleCheck(this._completed);
       // this._data.completed = !this._data.completed;
     });
   }

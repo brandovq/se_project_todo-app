@@ -13,19 +13,20 @@ class TodoCounter {
     this._completed += increment ? 1 : -1;
     this._updateText();
   };
-  // if increment is true, add 1 to this._completed. Otherwise
+  // Explanation of the above code: if increment is true, add 1 to this._completed. Otherwise
   // subtract 1. In either case, call the method to update
   // the text content.
 
-  // Call this when a to-do is deleted, or when a to-do is
-  // created via the form.
+  // Call this below when a to-do is deleted, or when a to-do is
+  // created via the form
   updateTotal = (increment) => {
     // if increment is true, add 1 to this._total. Otherwise,subtract 1. In either case, call the method to update the text content.
 
+    this._total += increment ? 1 : -1; //shows total number of todos
     this._updateText();
   };
 
-  // Here I had to call the updateText method to update the text content. DONE above in constructor. Just have this as reference to know what I did.
+  // Below I had to call the updateText method to update the text content. DONE above in constructor. Just have this as reference to know what I did.
   // This method sets the text content of corresponding text element
   // I called this in the constructor like I mentioned above, and whenever the counts get updated
   _updateText() {
