@@ -11,9 +11,7 @@ import TodoCounter from "../components/TodoCounter.js";
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupEl = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopupEl.querySelector(".popup__form");
-const addTodoCloseBtn = addTodoPopupEl.querySelector(".popup__close");
 // const todoTemplate = document.querySelector("#todo-template"); --> This was removed but kept here just for reference. It was selected through the getView method in the todo.js file instead.
-const todosList = document.querySelector(".todos__list");
 
 const todoCounter = new TodoCounter(initialTodos, ".counter__text"); // Here I instantiated the TodoCounter class, passing in the initialTodos array and the selector for the counter text element. REMEMBER that the .counter__text should match the one used in the HTML file
 
@@ -31,12 +29,29 @@ function handleDelete(completed) {
 const addTodoPopup = new PopupWithForm({
   popupSelector: "#add-todo-popup",
   handleFormSubmit: (inputValues) => {
+    // Generate a unique id
+    const id = uuidv4();
+
+    // Format the date and adjust for timezone
+    const date = new Date(inputValues.date);
+    date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+
+    // Create the values object with all required fields
+    const values = {
+      id,
+      name: inputValues.name,
+      date,
+      completed: false, // New todos are not completed by default
+    };
+
     //Move code from existing submission handler to here (below)
-    const todo = generateTodo(inputValues);
+    // Passed the values object to generateTodo
+    const todo = generateTodo(values);
     section.addItem(todo);
     todoCounter.updateTotal(true); // <-- Added this line to update total count when a new todo is added
     addTodoPopup.close();
     addTodoForm.reset();
+    newTodoValidator.resetValidation();
   },
 });
 addTodoPopup.setEventListeners();
@@ -70,12 +85,6 @@ const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
 };
 
-// New reusable function to render and append a todo
-const renderTodo = (item) => {
-  const todo = generateTodo(item);
-  todosList.append(todo);
-};
-
 //Find the currently opened modal and close it below:
 function handleEscapeClose(evt) {
   if (evt.key === "Escape") {
@@ -87,35 +96,6 @@ function handleEscapeClose(evt) {
 addTodoButton.addEventListener("click", () => {
   addTodoPopup.open();
 });
-
-//Below is old code,replaced by the addTodoPopup
-// addTodoForm.addEventListener("submit", (evt) => {
-//   evt.preventDefault();
-//   const name = evt.target.name.value;
-//   const dateInput = evt.target.date.value;
-
-//   // Created a date object and adjusted for timezone
-//   const date = new Date(dateInput);
-//   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-
-//   const id = uuidv4();
-
-//   const values = { name, date, id };
-//   const todo = generateTodo(values);
-//   section.addItem(todo); // Use addItem method from Section class to add the new todo
-
-//   // Resets form fields and validation state
-//   newTodoValidator.resetValidation();
-
-// // Rendered initial todos using the renderTodo function. Commented out below bc now done through Section class. You can't have this old code present or else the new code can be broken
-// initialTodos.forEach((item) => {
-//   renderTodo(item);
-// });
-// Use addItem method from Section class instead of this old code. Changed to new code below:
-
-// initialTodos.forEach((item) => {
-//   section.addItem(generateTodo(item));
-// });
 
 const newTodoValidator = new FormValidator(validationConfig, addTodoForm);
 newTodoValidator.enableValidation();

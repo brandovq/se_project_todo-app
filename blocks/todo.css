@@ -74,6 +74,12 @@
   content: "Delete";
 }
 
+.todo__delete-btn:hover {
+  color: #c00;
+  text-decoration: underline;
+}
+/* On desktop, the button is text, so you use color and text-decoration for hover. */
+
 @media screen and (max-width: 630px) {
   .todo__label {
     display: grid;
@@ -106,4 +112,9 @@
   .todo__delete-btn::before {
     content: "";
   }
+
+  .todo__delete-btn:hover {
+    opacity: 0.7;
+  }
+  /* On mobile/small screens, the button is an icon (no text), so you use opacity (or similar) for hover feedback, since changing text color or underline has no effect on an image. */
 }
